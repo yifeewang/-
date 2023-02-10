@@ -8,7 +8,7 @@
 }
 
 .table_wraper {
-    /* width: 70%; */
+    min-width: 800px;
 }
 
 .result_wraper {
