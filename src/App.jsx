@@ -459,7 +459,7 @@ const App = () => {
     })
     setOnehundredNum({
         chinese: oneChineseNum.toFixed(2), 
-        math: oneEnglishNum.toFixed(2), 
+        math: oneMathNum.toFixed(2), 
         english: oneEnglishNum.toFixed(2), 
         daofa: oneDaofaNum.toFixed(2)
     })
