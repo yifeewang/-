@@ -81,7 +81,7 @@ const EditableCell = ({
 const App = () => {
   const [dataSource, setDataSource] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(0);
   const [userName, setUserName] = useState('');
   const [studentNumShould, seStudentNumShould] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //应考人数：	
   const [studentNumReal, seStudentNumReal] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //实考人数：	
