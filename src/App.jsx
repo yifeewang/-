@@ -104,7 +104,7 @@ const App = () => {
   const [userName, setUserName] = useState('');
   const [studentNumShould, seStudentNumShould] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //应考人数：	
   const [studentNumReal, seStudentNumReal] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //实考人数：	
-  const [allPoint, setAllPoint] = useState({chinese: 100, math: 100, english: 100, daofa: 100}); //总分：	
+  const [allPoint, setAllPoint] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //总分：	
   const [averagePoint, setAveragePoint] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //平均分：	
   const [sixtyNum, setSixtyNum] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //及格人数：	
   const [sixtyPr, setSixtyPr] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //及格率：	
@@ -120,6 +120,7 @@ const App = () => {
   const [seventyNum, setSeventyNum] = useState({chinese: 0, math: 0, english: 0, daofa: 0}); //79.5-70分人次：	
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
+    localStorage.setItem('hyt_table', JSON.stringify(newData))
     setDataSource(newData);
   };
   const defaultColumns = [
@@ -166,6 +167,9 @@ const App = () => {
         ) : null,
     },
   ];
+  const handleReset = () => {
+    setDataSource([])
+  }
   const handleAdd = () => {
     const newData = {
       key: count,
@@ -187,6 +191,7 @@ const App = () => {
       ...item,
       ...row,
     });
+    localStorage.setItem('hyt_table', JSON.stringify(newData))
     setDataSource(newData);
   };
   const components = {
@@ -224,6 +229,8 @@ const App = () => {
     const name = e.target.value;
     setUserName(name)
     if(name === '黄艳婷') {
+        let nowTime = new Date().getTime()
+        localStorage.setItem('hyt_date', nowTime)
         messageApi.open({
             type: 'success',
             content: '尊贵的超级vip用户，欢迎使用！',
@@ -235,6 +242,19 @@ const App = () => {
         });
     }
   }
+  const isToday =  (date) => {
+      return new Date().toDateString() === new Date(date).toDateString();
+  }
+  useEffect(() => {
+    const cacheTable = localStorage.getItem('hyt_table');
+    const cacheTime = localStorage.getItem('hyt_date');
+    if(isToday(Number(cacheTime))) {
+        setUserName('黄艳婷')
+    }
+    if(cacheTable && typeof cacheTable === 'string') {
+        setDataSource(JSON.parse(cacheTable))
+    }
+  }, [])
   useEffect(() => {
     let chineseMap = new Map();
     let mathMap = new Map();
@@ -479,6 +499,12 @@ const App = () => {
         english: sevenEnglishNum.toFixed(2), 
         daofa: sevenDaofaNum.toFixed(2)
     })
+    setAllPoint({
+        chinese: chinesePoint.toFixed(2), 
+        math: mathPoint.toFixed(2), 
+        english: englishPoint.toFixed(2), 
+        daofa: daofaPoint.toFixed(2)
+    })
   }, [dataSource])
   return (
     <div className='wraper'>
@@ -506,6 +532,17 @@ const App = () => {
                         }}
                     >
                         添加
+                    </Button>
+                    <Button
+                        onClick={handleReset}
+                        type="primary"
+                        danger
+                        style={{
+                            marginBottom: 16,
+                            marginLeft: 16,
+                        }}
+                    >
+                        重置
                     </Button>
                 </div>
             </div>
