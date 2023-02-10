@@ -79,26 +79,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 const App = () => {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 0,
-      index: 1,
-      name: '张三',
-      chinese: '59',
-      math: '78',
-      english: '99',
-      daofa: '88',
-    },
-    {
-      key: 1,
-      index: 2,
-      name: '李四',
-      chinese: '68',
-      math: '98',
-      english: '50',
-      daofa: '88',
-    },
-  ]);
+  const [dataSource, setDataSource] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const [count, setCount] = useState(2);
   const [userName, setUserName] = useState('');
@@ -168,6 +149,7 @@ const App = () => {
     },
   ];
   const handleReset = () => {
+    localStorage.removeItem('hyt_table')
     setDataSource([])
   }
   const handleAdd = () => {
